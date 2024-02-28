@@ -72,3 +72,43 @@ k describe pods in-loop -n ckad
 ```shell
 k delete namespace ckad
 ```
+
+
+### Chapter 2
+1. Create a directory with the name config. Within the directory, create two files. The first file should be name db.txt and contain the key-value pair password=mypwd. The second file is named ext-service.txt and should define the key-value pair api_key=LmLHbYhsgWZwNifiqaRorH8T
+
+```code
+refer to the **chapter2/config** folder
+```
+
+2. Create a Secret named ext-service-secret that uses the directory as data source and inspect the YAML representation of the object
+
+```shell
+k create secret generic ext-service-secret --from-file=chapter/config
+k get secret ext-service-secret -o yaml
+```
+
+3. Create a Pod named consumer with the image nginx and mount the secret as a volume with the mount path /var/app. Open an interactive shell and inspect the values of the Secret
+
+```shell
+k create -f chapter2/consumer-pod.yaml
+```
+
+4. Use the declarative approach to create a configMap named ext-service-configmap. Feed in the key-value pairs api_endpoint=https://myapp.com/api and username=bot
+
+```shell
+k create -f chapter2/ext-service-configmap.yaml
+```
+
+5. Inject the ConfigMap values into the existing Pod as environment variables. Ensure that the keys conform to typical naming conventions of the environment variables
+
+```shell
+k create -f chapter2/consumer-pod-cmap.yaml
+```
+
+6. Open an interactive shell and Inspect the values of the config map
+```shell
+k get pod consumer-pod-cmap --env
+```
+
+7. Define a security context on the container level of a new Pod named security-context-demo that uses the image alpine. The security context adds the Linux capability CAP_SYS_TIME to the container. Explain if the value of this security context can be redefined in a Pod level security context.

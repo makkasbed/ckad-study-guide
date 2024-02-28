@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: consumer-cmap
+  labels:
+    name: consumer-cmap
+spec:
+  containers:
+  - name: consumer-cmap
+    image: nginx
+    env:
+      - name: API_ENDPOINT
+        valueFrom:
+          configMapKeyRef:
+            key: api_endpoint
+            name: ext-service-configmap
+      - name: USERNAME
+        valueFrom:
+          configMapKeyRef:
+            key: username
+            name: ext-service-configmap
+    volumeMounts:
+      - mountPath: /var/app
+        name: ext-service-secret  
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+  volume:
+   - name: ext-service-secret
+     secret:
+      secretName: ext-service-secret  
