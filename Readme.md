@@ -112,3 +112,27 @@ k get pod consumer-pod-cmap --env
 ```
 
 7. Define a security context on the container level of a new Pod named security-context-demo that uses the image alpine. The security context adds the Linux capability CAP_SYS_TIME to the container. Explain if the value of this security context can be redefined in a Pod level security context.
+
+```shell
+k apply -f chapter2/sec-pod.yaml
+```
+
+8. Define a ResourceQuota for the namespace project-firebird. The rules should constrain the count of Secret objects within the namespace to 1.
+```shell
+k create namespace project-firebird
+k apply -f chapter2/project-firebird.yaml
+```
+
+9. Create as many Secret objects within the namespace until the maximum number enforced by the ResourceQuota has been reached.
+```shell
+k create secret generic api_key_secret --from-literal=key=1234
+```
+
+10. Create a new Service Account named monitoring and assign it to a new Pod with an image of your choosing. Open an interactive shell and locate the authentication token of the assigned Service Account.
+```shell
+k create serviceaccount monitoring
+k apply -f chapter2/sec-pod-sa
+k get pod pod-sa -o yaml
+```
+
+

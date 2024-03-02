@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sa-pod
+  labels:
+    name: sa-pod
+spec:
+  containers:
+  - name: sa-pod
+    image: alpine
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    securityContext:
+      capabilities:
+        add:
+          - SYS_TIME
+ 
