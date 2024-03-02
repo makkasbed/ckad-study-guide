@@ -36,7 +36,6 @@ k logs nginx -n ckad
 ```shell
 k delete pod nginx -n ckad
 k run nginx --image=nginx:1.17.10 --port 80 -n ckad --env "DB_URL=postgresql://mydb:5432,DB_USERNAME=admin"
-
 ```
 
 6. Open the shell for the nginx container and inspect the contents of the current directory ls -l
@@ -49,13 +48,13 @@ ls -l
 Create the pod from the YAML manifest. What's the status of the Pod?
 
 ```shell
-k create -f ch01-pod.yaml -n ckad
+k create -f chapter1/ch01-pod.yaml -n ckad
 k describe pods loop -n ckad
 ```
 
 8. Edit the pod named loop. Change the command to run in an endless loop. Each iteration should echo the current date
 ```shell
- k create -f ch01-loop-while-pod.yaml -n ckad
+ k create -f chapter1/ch01-loop-while-pod.yaml -n ckad
 k describe pods in-loop -n ckad
 ```
 
