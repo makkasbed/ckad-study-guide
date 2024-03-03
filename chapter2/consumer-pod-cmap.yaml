@@ -26,7 +26,7 @@ spec:
       limits:
         memory: "128Mi"
         cpu: "500m"
-  volume:
+  volumes:
    - name: ext-service-secret
      secret:
       secretName: ext-service-secret  
