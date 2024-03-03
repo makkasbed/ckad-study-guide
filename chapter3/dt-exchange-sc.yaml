@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-exchange
+spec:
+  containers:
+  - name: main-app
+    image: busybox
+    command: ["sh","counter=1; while true; do touch '/var/app/data/$counter-data.txt'; counter=$((counter+1)); sleep 30; done" ]
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+  - name: sidecar
+    image: busybox
+    command: ["sh","-c", "while true; do ls -dq /var/app/data/*- data.txt | wc -l; sleep 30; done"]
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"

@@ -134,4 +134,59 @@ k apply -f chapter2/sec-pod-sa.yaml
 k get pod security-context-demo -o yaml
 ```
 
+### Chapter 3
+1. Create a YAML manifest for a Pod named complex-pod. The main application container named app should use the image nginx and expose the container port 80. Modify
+the YAML manifest so that the Pod defines an init container named setup that uses the image busybox. The init container runs the command wget -o google.com
+```shell
+refer to **chapter3/complex-pod.yaml
+```
+2. Create the Pod from the YAML manifest
+```shell
+k apply -f chapter3/complex-pod.yaml
+```
+
+3. Download the logs of the init container. You should see the output of the wget command
+```shell
+k logs complex-pod -c setup
+```
+
+4. Open an interactive shell to the main application container and run the ls command. Exit out of the container.
+```shell
+k exec complex-pod -c app --it -- /bin/sh
+ls
+```
+
+5. Force delete the pod
+```shell
+k delete pod complex-pod --force
+```
+
+6. Create a YAML manifest for a pod named data-exchange. The main application container named main-app should use the image busybox.
+The container runs a command that writes a new file every 30 seconds in an infinite loop in the directory /var/app/data. The filename follows the pattern {counter++}-data.txt. The variable counter is incremented every interval and starts with the value 1
+```shell
+k create -f chapter3/dt-exchange.yaml
+```
+
+7. Modify the YAML manifest by adding a sidecar container named sidecar. The sidecar container uses the image busybox and runs a command that counts the number of files 
+produced by the main-app container every 60 seconds in an infinite loop. The command runs the number of files to standard output
+```shell
+k apply -f chapter3/dt-exchange-sc.yaml
+```
+
+8. Define a volume of the type emptyDir. Mount the path /var/app/data for both containers
+```shell
+Refer to **chapter3/dt-exchange-sc.yaml**
+```
+9. Create the Pod. Tail the logs of the sidecar container
+```shell
+k apply -f chapter3/dt-exchange-sc-vol.yaml
+```
+10. Delete the pod
+```shell
+k delete pod data-exchange
+```
+
+
+
+
 
